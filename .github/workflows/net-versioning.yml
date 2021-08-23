@@ -1,0 +1,82 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    tags:
+    - 'c-*'
+    branches: [ main ]
+  pull_request:
+    tags:
+    - 'c-*'
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.8.1
+        with:
+          # Optional SDK version to use. If not provided, will install global.json version when available. Examples: 2.2.104, 3.1, 3.1.x
+          dotnet-version: '6.0.x'
+          # Optional package source for which to set up authentication. Will consult any existing NuGet.config in the root of the repo and provide a temporary NuGet.config using the NUGET_AUTH_TOKEN environment variable as a ClearTextPassword
+          #source-url: # optional
+          # Optional OWNER for using packages from GitHub Package Registry organizations/users other than the current repository's owner. Only used if a GPR URL is also provided in source-url
+          #owner: # optional
+          # Optional NuGet.config location, if your NuGet.config isn't located in the root of the repo.
+          #config-file: # optional
+          # Whether prerelease versions should be matched with non-exact versions (for example 5.0.0-preview.6 being matched by 5, 5.0, 5.x or 5.0.x). Defaults to false if not provided.
+          include-prerelease: true # optional
+          
+      - name: Checkout Files
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # for nbgv  - fetch-depth: 0
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0        
+      - name: Build solution
+        run: |
+          cd demo
+          dotnet tool install -g nbgv
+          dotnet build
+          dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
+
+      - name: Zip release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: 'release.zip'
+          directory: 'demo/bin/Debug/net6.0'
+
+      - name: Publis Release by tag
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "demo/bin/Debug/net6.0/release.zip"
+          body: 'test body <b>bold</b>'
+          # commit: 'main'
+          # tag: "rel2"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+          
