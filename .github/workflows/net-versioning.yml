@@ -57,7 +57,7 @@ jobs:
       - name: Publis Release by tag
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "demoFramework\bin\Release\release.zip"
+          artifacts: 'demoFramework\bin\Release\release.zip'
           body: 'test body <b>bold</b>'
           # commit: 'main'
           # tag: "rel2"
