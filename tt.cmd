@@ -1,5 +1,5 @@
 git stage .
-git commit -m "Work"
+git commit -m "TT - Compile"
 rem git commit -m "Work **BYPASS_SECRET_SCANNING**"
 git push
 
