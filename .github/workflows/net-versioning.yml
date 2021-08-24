@@ -57,7 +57,7 @@ jobs:
           directory: 'demoFramework\bin\Release'
       
       - name: Check directory
-        run: dir /s
+        run: Get-ChildItem -Recurse
 
       - name: Publis Release by tag
         uses: ncipollo/release-action@v1
