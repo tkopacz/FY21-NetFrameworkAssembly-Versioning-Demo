@@ -59,6 +59,9 @@ jobs:
       - name: Check directory
         run: Get-ChildItem -Recurse
 
+      - name: Test path
+        run: Test-Path 'demoFramework\bin\Release\release.zip'
+
       - name: Publis Release by tag
         uses: ncipollo/release-action@v1
         with:
