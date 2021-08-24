@@ -8,11 +8,11 @@ on:
   push:
     tags:
     - 'c-*'
-    branches: [ main ]
+    #branches: [ main ]
   pull_request:
     tags:
     - 'c-*'
-    branches: [ main ]
+    #branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
