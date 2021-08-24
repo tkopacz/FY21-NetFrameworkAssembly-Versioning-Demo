@@ -48,12 +48,17 @@ jobs:
           cd demoFramework
           nuget restore demoFramework.sln
           msbuild demoFramework.sln /p:Configuration=Release 
+
       - name: Zip release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           filename: 'demoFramework\bin\Release\release.zip'
           directory: 'demoFramework\bin\Release'
+      
+      - name: Check directory
+        run: dir /s
+
       - name: Publis Release by tag
         uses: ncipollo/release-action@v1
         with:
