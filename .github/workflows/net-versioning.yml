@@ -52,12 +52,12 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: 'release.zip'
-          directory: 'bin\Release'
+          filename: 'demoFramework\bin\Release\release.zip'
+          directory: 'demoFramework\bin\Release'
       - name: Publis Release by tag
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "demo/bin/Debug/net6.0/release.zip"
+          artifacts: "demoFramework\bin\Release\release.zip"
           body: 'test body <b>bold</b>'
           # commit: 'main'
           # tag: "rel2"
